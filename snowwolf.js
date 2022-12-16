@@ -25,6 +25,21 @@ const {Client, Collection, GatewayIntentBits} = require('discord.js');
 const client = new Client({intents: [GatewayIntentBits.Guilds]});
 const fs = require('node:fs');
 const path = require('node:path');
+const mongoose = require('mongoose');
+
+// MongoDB Connection
+async function mongoConnection() {
+    try {
+        await mongoose.connect(process.env.MONGODBURI);
+        mongoose.set('strictQuery', false);
+
+        console.log('[MONGO] MongoDB Connection successful!');
+    } catch(error) {
+        console.error(error);
+        process.exit(-1);
+    }
+}
+mongoConnection();
 
 // Discord Collections
 client.commands = new Collection();
